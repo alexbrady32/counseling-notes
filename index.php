@@ -6,7 +6,7 @@
 	$getFieldNames->execute();
 	$fieldNames = $getFieldNames->fetchall(PDO::FETCH_ASSOC);
 
-
 	
 	$smarty->assign('fieldNames', $fieldNames);
+	$smarty->assign('fieldNamesJSON', json_encode($fieldNames));
 	$smarty->display('index.tpl');
