@@ -36,7 +36,7 @@
 									<td id="{$line.Field_ID}-{$line.Title}" class="edit">
 									</td>
 								{else}
-									<td id="{$line.Field_ID}-{$line.Title}-{$line.Narrative_ID}" class="edit">
+									<td id="{$line.Field_ID}-{$line.Title}-{$line.Narrative_ID}" class="edit hasSequence">
 										{$line.Narrative_Line1}{literal}{{/literal}{$line.Title}{literal}}{/literal}{$line.Narrative_Line2}
 									</td>
 								{/if}
