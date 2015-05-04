@@ -35,9 +35,9 @@ $(document).ready(function() {
 			
 			var tableRowsString = '';
 			for(var i = 0; i < fieldOptionsData.length; i++){
-				tableRowsString += '<tr id="tr-' + fieldOptionsData[i]["FieldOption_ID"] + '">' +
+				tableRowsString += '<tr id="tr-' + fieldOptionsData[i]["FieldOption_ID"] + '-' + selectedFieldNameID + '">' +
 										'<td class="edit" id="' + fieldOptionsData[i]["FieldOption_ID"] + '">' + fieldOptionsData[i]["Choose_Options"] + '</td>' +
-										'<td><button id="bt-' + fieldOptionsData[i]["FieldOptionID"] + '"type="button" class="btn btn-default btDeleteOption">' +
+										'<td><button id="bt-' + fieldOptionsData[i]["FieldOption_ID"] + '"type="button" class="btn btn-default btDeleteOption">' +
 												'<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>' +
 											'</button></td>' +
 									'</tr>'
@@ -46,6 +46,13 @@ $(document).ready(function() {
 			$('#fieldOptionsTable tbody tr').remove();
 			$('#fieldOptionsTable > tbody:last').append(tableRowsString);
 			$("#fieldOptionsTable").trigger("update");
+			
+			/**
+			 * Makes the field editable
+			 */
+			$('.edit').editable('ajax/editOptionValue.php', {
+				 submit : 'OK'
+			});
 		});
 		
 		// TODO:
@@ -63,11 +70,16 @@ $(document).ready(function() {
     $btAddOptionValue.click(function() {
         if ($newOptionValue.val().length !== 0) {
 			var optionValue = $newOptionValue.val();
+			
+			// Get the associated field ID for the current table
+			// Just look at the id of the first row of the table
+			var fieldID = $("#fieldOptionsTable tbody tr:first").attr('id').split("-")[2];
+			console.log(fieldID);
 			$.ajax({
                 type: "POST",
-                url: "../ajax/insertOptionValue.php",
-                data: {
-                   
+                url: "ajax/insertOptionValue.php",
+                data: {   
+					optionID: fieldID,
 					optionValue: optionValue
                 }
             }).done(function(data) {
@@ -76,21 +88,21 @@ $(document).ready(function() {
                 if (Number(result) === result && result%1 === 0){
                     // Add new row to table
                     var newRow = 
-                        '<tr id="tr-' + result + '">' +
+                        '<tr id="tr-' + result + '-' + fieldID + '">' +
                             '<td class="edit">' + optionValue + '</td>' +
                             '<td><button id="bt-' + result + '"type="button" class="btn btn-default btDeleteOption">' +
-                                    '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>' +
-                                '</button></td>' +
+									'<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>' +
+								'</button></td>' +
                         '</tr>';
-					// Which table do we append to?
-                    $("#churches > tbody:last").append(newRow);
+					
+                    $("#fieldOptionsTable > tbody:last").append(newRow);
                     
                 }
                 
                 // Clear input
                 $newOptionValue.val("");
-                $("table").trigger("update");
-                $('.edit').editable('../ajax/editOptionValue.php', {
+                $("#fieldOptionsTable").trigger("update");
+                $('.edit').editable('ajax/editOptionValue.php', {
                     submit : 'OK'
                 });
             });
@@ -100,19 +112,23 @@ $(document).ready(function() {
     /**
      * Delete a row from the field_options
      */
-	 // Which table??
-    $("#churches").on("click", "button.btDeleteOption", function () {
+    $("#fieldOptionsTable").on("click", "button.btDeleteOption", function () {
         var optionID = $(this).attr('id').split("-")[1];
+		
+		// Get the associated field ID for the current table
+		// Just look at the id of the first row of the table
+		var fieldID = $("#fieldOptionsTable tbody tr:first").attr('id').split("-")[2];
+		
         $.ajax({
             type: "POST",
-            url: "../ajax/deleteOptionValue.php",
+            url: "ajax/deleteOptionValue.php",
             data: {
                 optionID: optionID
             }
         }).done(function(data) {
             if (data.indexOf("success") !== -1) {
-                $("tr#tr-" + optionID).remove();
-                $("table").trigger("update");
+                $("tr#tr-" + optionID + '-' + fieldID).remove();
+                $("#fieldOptionsTable").trigger("update");
             
             }
 

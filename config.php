@@ -1,6 +1,7 @@
 <?php
-
-	$dbConnection = new PDO('mysql:dbname=session_note;host=localhost;charset=utf8', 'root', 'SessionNotes15');
+	
+	//$dbConnection = new PDO('mysql:dbname=session_note;host=localhost;charset=utf8', 'root', 'SessionNotes15');
+	$dbConnection = new PDO('mysql:dbname=session_note;host=localhost;charset=utf8', 'root', '');
 
 	// load Smarty library
 	require('Smarty.class.php');

@@ -12,7 +12,7 @@ $updateQuery = $dbConnection->prepare("
     WHERE FieldOption_ID = :id");
 
 $updateQuery->bindParam(":value", $value);
-$updateQuery->bindParam(":id", id);
+$updateQuery->bindParam(":id", $id);
 $updateQueryResult = $updateQuery->execute();
 
 
