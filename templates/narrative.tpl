@@ -31,9 +31,11 @@
 							<tr>
 								<td>{$line.Title}</td>
 								
-								{if ($line.Narrative_Line1 == '' OR $line.Narrative_Line1 == 'NULL') AND
-										($line.Narrative_Line2 == '' OR $line.Narrative_Line2 == 'NULL')}
+								{if ($line.Narrative_Line1 == '' AND $line.Narrative_Line2 == '' AND !isset($line.Narrative_ID))}
 									<td id="{$line.Field_ID}-{$line.Title}" class="edit">
+									</td>
+								{else if ($line.Narrative_Line1 == '' AND $line.Narrative_Line2 == '')}
+									<td id="{$line.Field_ID}-{$line.Title}-{$line.Narrative_ID}" class="edit hasSequence">
 									</td>
 								{else}
 									<td id="{$line.Field_ID}-{$line.Title}-{$line.Narrative_ID}" class="edit hasSequence">
