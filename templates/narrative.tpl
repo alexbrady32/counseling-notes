@@ -28,7 +28,7 @@
 					<tbody>
 					
 						{foreach from=$narrativeLines key=key item=line}
-							<tr>
+							<tr id="{$line.Field_ID}">
 								<td>{$line.Title}</td>
 								
 								{if ($line.Narrative_Line1 == '' AND $line.Narrative_Line2 == '' AND !isset($line.Narrative_ID))}
@@ -43,14 +43,23 @@
 									</td>
 								{/if}
 								
-								
-								<td><button type="button" class="btn btn-default btDeleteOption">
-										<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-									</button>
-									<button type="button" class="btn btn-default btDeleteOption">
-										<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-									</button>
-								</td> 
+								{if isset($line.Narrative_ID)}
+									<td><button type="button" id="{$line.Narrative_ID}-up" class="btn btn-default btMoveUp">
+											<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+										</button>
+										<button type="button" id="{$line.Narrative_ID}-down" class="btn btn-default btMoveDown">
+											<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+										</button>
+									</td> 
+								{else}
+									<td><button type="button" class="btn btn-default btMoveUp">
+											<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+										</button>
+										<button type="button" class="btn btn-default btMoveDown">
+											<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+										</button>
+									</td> 
+								{/if}
 							</tr>
 						{/foreach}
 					
