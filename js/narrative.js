@@ -12,7 +12,7 @@ $(document).ready(function() {
                 data:{
                         id: $(this).attr("id"),
                         value : value,
-						lastSeqNumber	: $('.hasSequence:last').index(),
+						lastSeqNumber	: $('.hasSequence:last').parent().index(),
                     }
                
             }).done(function(data) {
@@ -46,24 +46,26 @@ $(document).ready(function() {
 			
 			
 			var index = $(this).parent().parent().index();
-	
-			$.ajax({
-				type: "POST",
-				url: "ajax/changeNarrativeOrder.php",
-				data: {
-					narrativeID : narrativeID,
-					operation	: operation,
-					index		: parseInt(index)
-				}
-			}).done(function(data) {
-				if (operation === "down"){
-					selectedRow.next().after(selectedRow);
-				}
-				else{
-					selectedRow.prev().before(selectedRow);
-				}
 
-			});
+			if (operation === "down" || (operation ==="up" && index !== 0)){
+				$.ajax({
+					type: "POST",
+					url: "ajax/changeNarrativeOrder.php",
+					data: {
+						narrativeID : narrativeID,
+						operation	: operation,
+						index		: parseInt(index)
+					}
+				}).done(function(data) {
+					if (operation === "down"){
+						selectedRow.next().after(selectedRow);
+					}
+					else{
+						selectedRow.prev().before(selectedRow);
+					}
+
+				});
+			}
 		}
 		else{
 			if (operation === "down"){
