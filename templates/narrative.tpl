@@ -44,18 +44,18 @@
 								{/if}
 								
 								{if isset($line.Narrative_ID)}
-									<td><button type="button" id="{$line.Narrative_ID}-up" class="btn btn-default btMoveUp">
+									<td><button type="button" id="{$line.Field_ID}-up-{$line.Narrative_ID}" class="btn btn-default btMoveUp">
 											<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
 										</button>
-										<button type="button" id="{$line.Narrative_ID}-down" class="btn btn-default btMoveDown">
+										<button type="button" id="{$line.Field_ID}-down-{$line.Narrative_ID}" class="btn btn-default btMoveDown">
 											<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 										</button>
 									</td> 
 								{else}
-									<td><button type="button" class="btn btn-default btMoveUp">
+									<td><button id="{$line.Field_ID}-up" type="button" class="btn btn-default btMoveUp">
 											<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
 										</button>
-										<button type="button" class="btn btn-default btMoveDown">
+										<button id="{$line.Field_ID}-down"type="button" class="btn btn-default btMoveDown">
 											<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 										</button>
 									</td> 

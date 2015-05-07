@@ -5,7 +5,7 @@ $(document).ready(function() {
     $('.edit').editable(	
 		function(value, settings){
             var selectedId = $(this).attr("id");
-			
+			var narrativeLine = $(this);
             $.ajax({
                 url:'ajax/editNarrativeLine.php',
                 type:'POST',   
@@ -13,18 +13,20 @@ $(document).ready(function() {
                         id: $(this).attr("id"),
                         value : value,
 						lastSeqNumber	: $('.hasSequence:last').index(),
-                    },
-                dataType: "JSON",
-				async:false,
+                    }
                
             }).done(function(data) {
-                    // TODO
-					// Add hasSequence class to new value
-					console.log("test");
-					selectedId.addClass('hasSequence');
-					
+				
+				var result = parseInt(data);
+                // check if result is an integer
+                if (Number(result) === result && result%1 === 0){
+					narrativeLine.addClass('hasSequence');
+					narrativeLine.attr("id", selectedId + "-" + result);
+				}
+				
 			});
-			console.log("test2");
+			
+			
             return value;
         } ,
         {
@@ -37,27 +39,42 @@ $(document).ready(function() {
 	
 	var changeNarrativeOrder = function () {
 		var selectedRow = $(this).parent().parent();
-        var narrativeID = $(this).attr('id').split("-")[0];
+		var idArray = $(this).attr('id').split("-");
 		var operation = $(this).attr('id').split("-")[1];
-		var index = $(this).parent().parent().index();
+		if (idArray.length === 3){
+			var narrativeID = $(this).attr('id').split("-")[2];
+			
+			
+			var index = $(this).parent().parent().index();
 	
-        $.ajax({
-            type: "POST",
-            url: "ajax/changeNarrativeOrder.php",
-            data: {
-                narrativeID : narrativeID,
-				operation	: operation,
-				index		: parseInt(index)
-            }
-        }).done(function(data) {
-            if (operation === "down"){
-				selectedRow.next().after(selectedRow);
+			$.ajax({
+				type: "POST",
+				url: "ajax/changeNarrativeOrder.php",
+				data: {
+					narrativeID : narrativeID,
+					operation	: operation,
+					index		: parseInt(index)
+				}
+			}).done(function(data) {
+				if (operation === "down"){
+					selectedRow.next().after(selectedRow);
+				}
+				else{
+					selectedRow.prev().before(selectedRow);
+				}
+
+			});
+		}
+		else{
+			if (operation === "down"){
+					selectedRow.next().after(selectedRow);
 			}
 			else{
 				selectedRow.prev().before(selectedRow);
 			}
-
-        });
+		}
+        
+		
 	};
 	
 	$("#narrativeLines").on("click", "button.btMoveUp", changeNarrativeOrder);

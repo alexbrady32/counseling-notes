@@ -6,42 +6,57 @@ $narrativeID = filter_input(INPUT_POST, 'narrativeID');
 $operation = filter_input(INPUT_POST, 'operation');
 $sequenceNum = filter_input(INPUT_POST, 'index');
 
+
 // Update the first narrative
 if ($operation == 'up'){
 	$updateSequence = $dbConnection->prepare("
     UPDATE narrative
 	SET Seq_Number = Seq_Number - 1
 	WHERE Narrative_ID = :narrativeID");
+	
+	$findSecondNarrative = $dbConnection->prepare("
+	SELECT Narrative_ID FROM narrative WHERE Seq_Number = :sequenceNum");
+	$secondSequenceNum = $sequenceNum - 1 ;
+	$findSecondNarrative->bindParam(":sequenceNum", $secondSequenceNum);
+	$secondNarrativeResult = $findSecondNarrative->execute();
 }
 else{
 	$updateSequence = $dbConnection->prepare("
     UPDATE narrative
 	SET Seq_Number = Seq_Number + 1
 	WHERE Narrative_ID = :narrativeID");
+	
+	$findSecondNarrative = $dbConnection->prepare("
+	SELECT Narrative_ID FROM narrative WHERE Seq_Number = :sequenceNum");
+	$secondSequenceNum = $sequenceNum + 1 ;
+	$findSecondNarrative->bindParam(":sequenceNum", $secondSequenceNum);
+	$secondNarrativeResult = $findSecondNarrative->execute();
+}
+
+if ($secondNarrativeResult){
+	$updateSequence->bindParam(":narrativeID", $narrativeID);
+	$result = $updateSequence->execute();
+
+
+	$secondNarrativeID = $findSecondNarrative->fetch(PDO::FETCH_ASSOC);
+	// Update the other narrative
+	if ($operation == 'up'){
+		$updateSequence = $dbConnection->prepare("
+		UPDATE narrative
+		SET Seq_Number = Seq_Number + 1
+		WHERE Narrative_ID = :secondNarrativeID");
+		$updateSequence->bindParam(":secondNarrativeID", $secondNarrativeID["Narrative_ID"] );
+	}
+	else{
+		$updateSequence = $dbConnection->prepare("
+		UPDATE narrative
+		SET Seq_Number = Seq_Number - 1
+		WHERE Narrative_ID = :secondNarrativeID");
+		$updateSequence->bindParam(":secondNarrativeID", $secondNarrativeID["Narrative_ID"] );
+	}
+
+	$result = $updateSequence->execute();
 }
 
 
-$updateSequence->bindParam(":narrativeID", $narrativeID);
-$result = $updateSequence->execute();
-
-
-// Update the other narrative
-if ($operation == 'up'){
-	$updateSequence = $dbConnection->prepare("
-    UPDATE narrative
-	SET Seq_Number = Seq_Number + 1
-	WHERE Seq_Number = :sequenceNum");
-	$otherSequenceNum = $sequenceNum - 1;
-	$updateSequence->bindParam(":sequenceNum", $otherSequenceNum );
-}
-else{
-	$updateSequence = $dbConnection->prepare("
-    UPDATE narrative
-	SET Seq_Number = Seq_Number - 1
-	WHERE Seq_Number = :sequenceNum");
-	$otherSequenceNum = $sequenceNum + 1;
-	$updateSequence->bindParam(":sequenceNum", $otherSequenceNum );
-}
-
-$result = $updateSequence->execute();
 

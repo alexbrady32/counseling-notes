@@ -58,12 +58,14 @@ else if (count($id) == 2){
 	$insertNarrative->bindParam(':fieldID', $id[0]);
 	$insertNarrativeResult = $insertNarrative->execute();
 	
+	
 	if ($insertNarrativeResult) {
-		echo $value;
+		$getOptionID = $dbConnection->prepare("SELECT LAST_INSERT_ID()" );
+		$getOptionID->execute();
+		$optionID = $getOptionID->fetch(PDO::FETCH_ASSOC);
+		echo $optionID["LAST_INSERT_ID()"];
 	}
-	else {
-		echo 'failure';
-	}
+
 	
 }
 
