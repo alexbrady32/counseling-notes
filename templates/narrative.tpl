@@ -14,6 +14,11 @@
 			<h2> Narrative </h2>
 			</br>
 			<div class="col-md-10">
+				{literal}
+				The fields of the form are listed below. Each field has a corresponding narrative line. This narrative is a template,
+				so in order for the correct data to be displayed after a session, please put placeholder, using {} inclosed with the field name,
+				(e.g. {Date}) to indicate where you would like the data from the form to go.
+				{/literal}
 				<br/>
 				<table id="narrativeLines" class="table">
 				
