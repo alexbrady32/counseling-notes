@@ -9,28 +9,33 @@ $sequenceNum = filter_input(INPUT_POST, 'index');
 
 // Update the first narrative
 if ($operation == 'up'){
-	$updateSequence = $dbConnection->prepare("
-    UPDATE narrative
-	SET Seq_Number = Seq_Number - 1
-	WHERE Narrative_ID = :narrativeID");
 	
 	$findSecondNarrative = $dbConnection->prepare("
 	SELECT Narrative_ID FROM narrative WHERE Seq_Number = :sequenceNum");
 	$secondSequenceNum = $sequenceNum - 1 ;
 	$findSecondNarrative->bindParam(":sequenceNum", $secondSequenceNum);
 	$secondNarrativeResult = $findSecondNarrative->execute();
-}
-else{
+	
 	$updateSequence = $dbConnection->prepare("
     UPDATE narrative
-	SET Seq_Number = Seq_Number + 1
+	SET Seq_Number = Seq_Number - 1
 	WHERE Narrative_ID = :narrativeID");
 	
+	
+}
+else{
 	$findSecondNarrative = $dbConnection->prepare("
 	SELECT Narrative_ID FROM narrative WHERE Seq_Number = :sequenceNum");
 	$secondSequenceNum = $sequenceNum + 1 ;
 	$findSecondNarrative->bindParam(":sequenceNum", $secondSequenceNum);
 	$secondNarrativeResult = $findSecondNarrative->execute();
+	
+	$updateSequence = $dbConnection->prepare("
+    UPDATE narrative
+	SET Seq_Number = Seq_Number + 1
+	WHERE Narrative_ID = :narrativeID");
+	
+	
 }
 
 if ($secondNarrativeResult){

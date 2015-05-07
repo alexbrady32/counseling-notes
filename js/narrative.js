@@ -33,7 +33,7 @@ $(document).ready(function() {
 			placeholder: '', 
 			submit: 'OK',
 			data: function(string){
-				return $.trim(string);
+				return string;
 			},
 	});
 	

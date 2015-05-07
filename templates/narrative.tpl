@@ -10,14 +10,17 @@
 
 	</head>
 	<body>
+		
 		<div class="container">
+			<a href="index.php">Form Fields</a>
+			<a href="narrative.php">Narrative</a>
 			<h2> Narrative </h2>
 			</br>
 			<div class="col-md-10">
 				{literal}
 				The fields of the form are listed below. Each field has a corresponding narrative line. This narrative is a template,
-				so in order for the correct data to be displayed after a session, please put placeholder, using {} inclosed with the field name,
-				(e.g. {Date}) to indicate where you would like the data from the form to go.
+				so in order for the correct data to be displayed after a session, please put placeholder, using the field enclosed in {},
+				(e.g. {Gender}) to indicate where you would like the data from the form to go.
 				{/literal}
 				<br/>
 				<table id="narrativeLines" class="table">
@@ -37,15 +40,11 @@
 								<td>{$line.Title}</td>
 								
 								{if ($line.Narrative_Line1 == '' AND $line.Narrative_Line2 == '' AND !isset($line.Narrative_ID))}
-									<td id="{$line.Field_ID}-{$line.Title}" class="edit">
-									</td>
+									<td id="{$line.Field_ID}-{$line.Title}" class="edit"></td>
 								{else if ($line.Narrative_Line1 == '' AND $line.Narrative_Line2 == '')}
-									<td id="{$line.Field_ID}-{$line.Title}-{$line.Narrative_ID}" class="edit hasSequence">
-									</td>
+									<td id="{$line.Field_ID}-{$line.Title}-{$line.Narrative_ID}" class="edit hasSequence"></td>
 								{else}
-									<td id="{$line.Field_ID}-{$line.Title}-{$line.Narrative_ID}" class="edit hasSequence">
-										{$line.Narrative_Line1}{literal}{{/literal}{$line.Title}{literal}}{/literal}{$line.Narrative_Line2}
-									</td>
+									<td id="{$line.Field_ID}-{$line.Title}-{$line.Narrative_ID}" class="edit hasSequence">{$line.Narrative_Line1}{literal}{{/literal}{$line.Title}{literal}}{/literal}{$line.Narrative_Line2}</td>
 								{/if}
 								
 								{if isset($line.Narrative_ID)}

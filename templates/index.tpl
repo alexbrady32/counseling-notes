@@ -22,7 +22,11 @@
 	</head>
 	<body>
 		<div class="container">
+			<a href="index.php">Form Fields</a>
+			<a href="narrative.php">Narrative</a>
 			<h2> Form Fields </h2>
+			</br>
+			
 			</br>
 			<div class = "row">
 				<div class="col-md-4">

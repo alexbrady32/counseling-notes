@@ -1,7 +1,7 @@
 <?php
 	include("config.php");
 	
-	$getFieldNames = $dbConnection->prepare("SELECT Field_ID, Title FROM fields");
+	$getFieldNames = $dbConnection->prepare("SELECT Field_ID, Title FROM fields ORDER BY FormSeq_Number ");
 	//$getFieldNames->bindParam(":email", $email);
 	$getFieldNames->execute();
 	$fieldNames = $getFieldNames->fetchall(PDO::FETCH_ASSOC);
